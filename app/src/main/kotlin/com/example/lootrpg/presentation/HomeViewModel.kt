@@ -2,7 +2,7 @@ package com.example.lootrpg.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lootrpg.foundation.domain.InitializeFoundationUseCase
+import com.example.lootrpg.player.domain.LoadPlayerUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val initializeFoundation: InitializeFoundationUseCase,
+    private val loadPlayer: LoadPlayerUseCase,
 ) : ViewModel() {
     private val mutableState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val state: StateFlow<HomeUiState> = mutableState.asStateFlow()
@@ -28,8 +28,8 @@ class HomeViewModel(
         initialization = viewModelScope.launch {
             mutableState.value = HomeUiState.Loading
             try {
-                initializeFoundation()
-                mutableState.value = HomeUiState.Ready
+                val player = loadPlayer()
+                mutableState.value = HomeUiState.Loaded(player, ExperienceDisplay.forPlayer(player))
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (_: Exception) {

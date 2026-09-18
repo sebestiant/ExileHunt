@@ -58,3 +58,12 @@ Version references checked during setup:
 [Kotlin releases](https://kotlinlang.org/docs/releases.html),
 [KSP releases](https://github.com/google/ksp/releases),
 [Coroutines releases](https://github.com/Kotlin/kotlinx.coroutines/releases).
+
+## 2026-09-18 — One persistent local player
+
+Context: Milestone 1 needs a profile but no accounts or gameplay mutations.
+Decision: domain-owned defaults and an atomic getOrCreate repository operation;
+Room uses an internal singleton slot distinct from PlayerId. A fixed local ID is
+sufficient; a UUID service or account identity would be speculative. Migration
+1 -> 2 replaces the temporary marker without destructive fallback. Consequence:
+future account support must explicitly map local identity; no unused CRUD APIs.

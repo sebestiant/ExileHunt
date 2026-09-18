@@ -28,7 +28,7 @@ fun HomeScreen(state: HomeUiState, onRetry: () -> Unit) {
             Text(stringResource(R.string.prototype_description))
             Text(stringResource(when (state) {
                 HomeUiState.Loading -> R.string.preparing
-                HomeUiState.Ready -> R.string.ready
+                is HomeUiState.Loaded -> R.string.ready
                 HomeUiState.Error -> R.string.initialization_failed
             }))
             if (state == HomeUiState.Error) {

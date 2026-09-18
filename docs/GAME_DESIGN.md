@@ -15,9 +15,12 @@ philosophy. All actual content and presentation must be original.
 
 ## Undecided (TBD)
 
-Combat formulas, stats, classes, rarity tiers, drop probabilities, item generation,
+Combat formulas, additional stats, classes, rarity tiers, drop probabilities, item generation,
 monsters, areas, XP curves, unlock rules, failure rewards, exact cooldown policy,
 offline clock-change handling, monetization, and backend design: **TBD**.
 
-Milestone 0 implements none of these mechanics. Do not infer game rules from the
-temporary foundation persistence component.
+## Milestone 1 foundation
+
+The default player is Adventurer, Level 1, XP 0, Gold 100, Attack 10, Defense 5,
+and Max Health 100. The Level 1 XP display target is 100; no XP gain or progression
+formula is implemented. Player values persist locally and are not reset on launch.

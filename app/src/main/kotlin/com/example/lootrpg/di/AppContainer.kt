@@ -6,9 +6,9 @@ import com.example.lootrpg.core.domain.RandomProvider
 import com.example.lootrpg.core.domain.TimeProvider
 import com.example.lootrpg.data.LocalRandomProvider
 import com.example.lootrpg.data.LocalTimeProvider
-import com.example.lootrpg.data.RoomFoundationRepository
+import com.example.lootrpg.data.RoomPlayerRepository
 import com.example.lootrpg.data.persistence.LootRpgDatabase
-import com.example.lootrpg.foundation.domain.InitializeFoundationUseCase
+import com.example.lootrpg.player.domain.LoadPlayerUseCase
 
 /** Application-scoped composition root. Only wiring knows concrete dependencies. */
 class AppContainer(context: Context) {
@@ -19,10 +19,7 @@ class AppContainer(context: Context) {
         context.applicationContext,
         LootRpgDatabase::class.java,
         "lootrpg.db",
-    ).build()
+    ).addMigrations(LootRpgDatabase.MIGRATION_1_2).build()
 
-    val initializeFoundation = InitializeFoundationUseCase(
-        repository = RoomFoundationRepository(database.foundationDao()),
-        timeProvider = timeProvider,
-    )
+    val loadPlayer = LoadPlayerUseCase(RoomPlayerRepository(database.playerDao()))
 }

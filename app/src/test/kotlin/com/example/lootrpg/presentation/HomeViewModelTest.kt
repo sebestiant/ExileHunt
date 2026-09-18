@@ -1,9 +1,8 @@
 package com.example.lootrpg.presentation
 
-import com.example.lootrpg.core.domain.TimeProvider
-import com.example.lootrpg.foundation.domain.FoundationRepository
-import com.example.lootrpg.foundation.domain.InitializeFoundationUseCase
-import java.time.Instant
+import com.example.lootrpg.player.domain.Player
+import com.example.lootrpg.player.domain.PlayerRepository
+import com.example.lootrpg.player.domain.LoadPlayerUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,10 +26,11 @@ class HomeViewModelTest {
     @Test
     fun `loading becomes ready only after initialization`() = runTest(dispatcher) {
         var calls = 0
-        val model = model(FoundationRepository { calls++ })
+        val player = Player.newAdventurer()
+        val model = model(PlayerRepository { calls++; player })
         assertEquals(HomeUiState.Loading, model.state.value)
         advanceUntilIdle()
-        assertEquals(HomeUiState.Ready, model.state.value)
+        assertEquals(HomeUiState.Loaded(player, ExperienceDisplay(0, 100)), model.state.value)
         model.retry()
         advanceUntilIdle()
         assertEquals(1, calls)
@@ -39,26 +39,33 @@ class HomeViewModelTest {
     @Test
     fun `failure can be retried without duplicate requests`() = runTest(dispatcher) {
         var calls = 0
-        val model = model(FoundationRepository {
+        val model = model(PlayerRepository {
             if (++calls == 1) throw IllegalStateException("Unavailable")
+            Player.newAdventurer()
         })
         advanceUntilIdle()
         assertEquals(HomeUiState.Error, model.state.value)
         model.retry()
         model.retry()
         advanceUntilIdle()
-        assertEquals(HomeUiState.Ready, model.state.value)
+        assertEquals(Player.newAdventurer(), (model.state.value as HomeUiState.Loaded).player)
         assertEquals(2, calls)
     }
 
     @Test
     fun `cancellation is not converted into an error`() = runTest(dispatcher) {
-        val model = model(FoundationRepository { throw CancellationException() })
+        val model = model(PlayerRepository { throw CancellationException() })
         advanceUntilIdle()
         assertEquals(HomeUiState.Loading, model.state.value)
     }
 
-    private fun model(repository: FoundationRepository) = HomeViewModel(
-        InitializeFoundationUseCase(repository, TimeProvider { Instant.EPOCH }),
-    )
+    @Test
+    fun `existing player values reach the UI unchanged`() = runTest(dispatcher) {
+        val existing = Player.newAdventurer().copy(name = "Wayfarer", currentXp = 25, gold = 137)
+        val model = model(PlayerRepository { existing })
+        advanceUntilIdle()
+        assertEquals(HomeUiState.Loaded(existing, ExperienceDisplay(25, 100)), model.state.value)
+    }
+
+    private fun model(repository: PlayerRepository) = HomeViewModel(LoadPlayerUseCase(repository))
 }

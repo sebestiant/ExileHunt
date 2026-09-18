@@ -10,7 +10,7 @@ packages rather than additional modules. Namespace: `com.example.lootrpg`.
 | Path below source namespace | Responsibility |
 | --- | --- |
 | `domain/.../core/domain` | TimeProvider and RandomProvider contracts |
-| `domain/.../foundation/domain` | Temporary repository contract and initialization use case |
+| `domain/.../player/domain` | Player/CombatStats models, repository contract, load-or-create use case |
 | `app/.../data` | Local adapters and repository implementations |
 | `app/.../data/persistence` | Internal Room database, DAO, and entity |
 | `app/.../presentation` | HomeViewModel and immutable HomeUiState |
@@ -50,11 +50,12 @@ to be the permanent authority. Business rules remain independent and portable.
 
 ## Current integration slice
 
-HomeViewModel calls InitializeFoundationUseCase, which reads TimeProvider and
-calls FoundationRepository.initialize. RoomFoundationRepository atomically inserts
-a singleton marker with conflict-ignore semantics, preserving the first timestamp.
-This is a temporary wiring probe, not a game save. It can be removed with an
-explicit schema migration when real persistent state makes it redundant.
+HomeViewModel calls LoadPlayerUseCase. Default player values live in Domain.
+PlayerRepository.getOrCreate atomically returns the stored profile or persists the
+initial player. RoomPlayerRepository maps domain objects to a single internal row;
+PlayerDao uses a transaction and conflict-ignore insertion to avoid resets/races.
+Migration 1 -> 2 replaces the temporary marker with the player table. The former
+marker is not player data; its schema export remains available for migration tests.
 
 Room runs suspend DAO work off the main thread. The database is application-scoped,
 exports schemas, and has no destructive fallback. AppContainer owns concrete
@@ -77,9 +78,13 @@ production RNG is wired but intentionally unused until gameplay requires it.
 ## State and error conventions
 
 ViewModels expose read-only StateFlow of immutable UI state. Compose uses lifecycle-
-aware collection and emits actions. Home initialization has Loading, Ready, and
+aware collection and emits actions. Home initialization has Loading, Loaded, and
 Error states; retry is guarded against duplicate active work. Coroutine cancellation
 is rethrown. Data failures propagate to the presentation boundary, which displays a
 generic retry message. Add typed domain failures only when concrete game operations
 require distinctions. Presentation and UI imports are reviewed for layer violations;
 only the Domain boundary is enforced by a separate module today.
+
+ExperienceDisplay supplies the specified Level 1 target (100 XP) and a bounded
+display fraction. Other level requirements remain unspecified; this is not an XP
+curve or a leveling system. No model mutation operations exist yet.

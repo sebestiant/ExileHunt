@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val container = (application as LootRpgApplication).container
         val factory = viewModelFactory {
-            initializer { HomeViewModel(container.initializeFoundation) }
+            initializer { HomeViewModel(container.loadPlayer) }
         }
         setContent {
             MaterialTheme {
