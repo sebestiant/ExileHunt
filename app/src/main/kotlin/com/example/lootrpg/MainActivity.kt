@@ -6,6 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.SystemBarStyle
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -23,13 +26,18 @@ class MainActivity : ComponentActivity() {
         )
         val container = (application as LootRpgApplication).container
         val factory = viewModelFactory {
-            initializer { HomeViewModel(container.loadPlayer) }
+            initializer { HomeViewModel(container.loadHunt, container.performHunt,
+                container.acknowledgeIntroduction, container.timeProvider) }
         }
         setContent {
             ExileHuntTheme {
                 val model: HomeViewModel = viewModel(factory = factory)
                 val state by model.state.collectAsStateWithLifecycle()
-                HomeScreen(state = state, onRetry = model::retry)
+                LaunchedEffect(model) {
+                    lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) { model.updateClockWhileActive() }
+                }
+                HomeScreen(state = state, onRetry = model::retry, onHunt = model::hunt,
+                    onAcknowledgeOpening = model::acknowledgeOpening)
             }
         }
     }

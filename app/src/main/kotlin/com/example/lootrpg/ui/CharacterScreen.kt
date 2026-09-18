@@ -16,6 +16,12 @@ internal fun CharacterScreen(state: HomeUiState.Loaded) {
         Text(stringResource(R.string.character), style = MaterialTheme.typography.headlineLarge)
         PlayerSummary(state)
         Panel {
+            SectionHeading(stringResource(R.string.hunt_statistics))
+            DetailRow(stringResource(R.string.total_hunts), state.player.totalHunts.toString())
+            DetailRow(stringResource(R.string.victories), state.player.victories.toString())
+            DetailRow(stringResource(R.string.defeats), state.player.defeats.toString())
+        }
+        Panel {
             SectionHeading(stringResource(R.string.combat_stats))
             DetailRow(stringResource(R.string.attack), state.player.stats.attack.toString())
             DetailRow(stringResource(R.string.defense), state.player.stats.defense.toString())

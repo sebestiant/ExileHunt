@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ExileHunt</string>
     <string name="initialization_failed">Unable to load your adventurer. Please try again.</string>
     <string name="retry">Retry</string>
@@ -6,16 +6,12 @@
     <string name="character">Character</string>
     <string name="inventory">Inventory</string>
     <string name="world">World</string>
-    <string name="your_journey">YOUR JOURNEY</string>
     <string name="level_label">Level</string>
     <string name="gold">Gold</string>
     <string name="xp_progress">%1$d / %2$d XP</string>
     <string name="xp_unknown">%1$d XP · Next level: TBD</string>
     <string name="current_area">CURRENT AREA</string>
-    <string name="area_outskirts">The Wild Outskirts</string>
-    <string name="area_description">A quiet frontier where inexperienced adventurers begin their journey.</string>
     <string name="hunt_available">Hunt Available</string>
-    <string name="hunting_coming_soon">Hunting will be introduced in the next milestone.</string>
     <string name="combat_stats">COMBAT STATS</string>
     <string name="attack">Attack</string>
     <string name="defense">Defense</string>
@@ -35,4 +31,36 @@
     <string name="area_ruins">Forgotten Ruins</string>
     <string name="area_pass">Blackstone Pass</string>
     <string name="locked">Locked</string>
+    <string name="the_fracture">THE FRACTURE</string>
+    <string name="opening_lore">Years ago, the Wardstones fell. Nobody knows why.\n\nThe roads beyond Greyhaven have never been safe since. Settlements stand alone, and ruins appear where none stood before. Some say the land itself has changed.\n\nYou arrived as an unknown wanderer. For coin, survival, or perhaps simple curiosity, you have agreed to hunt beyond the walls. Something is stirring in the Wild Outskirts.</string>
+    <string name="beyond_walls">Venture beyond the walls</string>
+    <string name="recommended_start">Recommended Level: 1</string>
+    <string name="recommended_levels">Recommended Level: %1$d–%2$d</string>
+    <string name="intro_save_error">Could not save your acknowledgment. Please try again.</string>
+    <string name="hunt_error">The hunt could not be saved. Please try again.</string>
+    <string name="hunt_action">HUNT</string>
+    <string name="next_hunt">NEXT HUNT\n%1$s</string>
+    <string name="resolving">ENCOUNTER IN PROGRESS</string>
+    <string name="searching">Searching %1$s…</string>
+    <string name="encounter">ENCOUNTER</string>
+    <string name="level_value">Level %1$d</string>
+    <string name="gold_value">Gold: %1$d</string>
+    <string name="victory">VICTORY</string>
+    <string name="defeat">DEFEAT</string>
+    <string name="survived">You survived the encounter.</string>
+    <string name="retreated">The creature forced you back toward Greyhaven.</string>
+    <string name="round_limit">The encounter lasted too long. You retreated.</string>
+    <string name="combat_summary">Damage Dealt: %1$d · Damage Taken: %2$d · Rounds: %3$d</string>
+    <!-- XP and Gold are non-inflected currency labels. -->
+    <string name="reward_summary" tools:ignore="PluralsCandidate">+%1$d XP · +%2$d Gold</string>
+    <string name="level_up">LEVEL UP! Level %1$d</string>
+    <string name="stat_change">%1$s: %2$d → %3$d</string>
+    <string name="recent_hunts">RECENT HUNTS</string>
+    <string name="no_hunts">Your first encounter awaits beyond the walls.</string>
+    <string name="history_victory">Victory — %1$s</string>
+    <string name="history_defeat">Defeat — %1$s</string>
+    <string name="hunt_statistics">HUNT STATISTICS</string>
+    <string name="total_hunts">Total Hunts</string>
+    <string name="victories">Victories</string>
+    <string name="defeats">Defeats</string>
 </resources>

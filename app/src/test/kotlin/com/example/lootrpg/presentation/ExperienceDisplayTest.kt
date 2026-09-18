@@ -15,7 +15,7 @@ class ExperienceDisplayTest {
 
     @Test
     fun `unknown requirements are not invented and progress is bounded`() {
-        val unknown = ExperienceDisplay.forPlayer(Player.newAdventurer().copy(level = 2))
+        val unknown = ExperienceDisplay.forPlayer(Player.newAdventurer().copy(level = 5))
         assertNull(unknown.required)
         assertEquals(0f, unknown.fraction)
         assertEquals(1f, ExperienceDisplay(101, 100).fraction)

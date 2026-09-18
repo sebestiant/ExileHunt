@@ -1,6 +1,7 @@
 package com.example.lootrpg.ui
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -21,11 +22,13 @@ import androidx.compose.ui.unit.dp
 import com.example.lootrpg.R
 import com.example.lootrpg.presentation.ExperienceDisplay
 import com.example.lootrpg.presentation.HomeUiState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.runtime.getValue
 
 @Composable
-internal fun ScreenColumn(content: @Composable ColumnScope.() -> Unit) {
+internal fun ScreenColumn(scrollState: ScrollState = rememberScrollState(), content: @Composable ColumnScope.() -> Unit) {
     Column(
-        modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(20.dp),
+        modifier = Modifier.fillMaxWidth().verticalScroll(scrollState).padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         content = content,
     )
@@ -66,7 +69,8 @@ internal fun PlayerSummary(state: HomeUiState.Loaded) {
 }
 
 @Composable
-private fun ExperienceBar(experience: ExperienceDisplay) {
+internal fun ExperienceBar(experience: ExperienceDisplay) {
+    val progress by animateFloatAsState(experience.fraction, label = "Experience progress")
     Text(
         text = experience.required?.let { stringResource(R.string.xp_progress, experience.current, it) }
             ?: stringResource(R.string.xp_unknown, experience.current),
@@ -74,7 +78,7 @@ private fun ExperienceBar(experience: ExperienceDisplay) {
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
     LinearProgressIndicator(
-        progress = { experience.fraction },
+        progress = { progress },
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.primary,
         trackColor = MaterialTheme.colorScheme.surfaceVariant,

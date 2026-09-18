@@ -11,15 +11,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
@@ -30,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.lootrpg.R
 import com.example.lootrpg.presentation.HomeUiState
-import kotlinx.coroutines.launch
 
 private enum class Destination(val label: Int, val icon: Int) {
     Hunt(R.string.hunt, R.drawable.ic_hunt),
@@ -40,19 +35,15 @@ private enum class Destination(val label: Int, val icon: Int) {
 }
 
 @Composable
-fun HomeScreen(state: HomeUiState, onRetry: () -> Unit) {
+fun HomeScreen(state: HomeUiState, onRetry: () -> Unit, onHunt: () -> Unit, onAcknowledgeOpening: () -> Unit) {
     var selectedName by rememberSaveable { mutableStateOf(Destination.Hunt.name) }
     val selected = Destination.entries.firstOrNull { it.name == selectedName } ?: Destination.Hunt
     val savedScreens = rememberSaveableStateHolder()
-    val snackbar = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-    val comingSoon = stringResource(R.string.hunting_coming_soon)
 
     BackHandler(enabled = selected != Destination.Hunt) { selectedName = Destination.Hunt.name }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
             NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 Destination.entries.forEach { destination ->
@@ -85,13 +76,7 @@ fun HomeScreen(state: HomeUiState, onRetry: () -> Unit) {
                                 TextButton(onClick = onRetry) { Text(stringResource(R.string.retry)) }
                             }
                             is HomeUiState.Loaded -> if (selected == Destination.Hunt) {
-                                HuntScreen(state, onHuntPreview = {
-                                    // Only UI feedback: there is no hunt use case or player mutation.
-                                    scope.launch {
-                                        snackbar.currentSnackbarData?.dismiss()
-                                        snackbar.showSnackbar(comingSoon)
-                                    }
-                                })
+                                HuntScreen(state, onHunt, onAcknowledgeOpening)
                             } else CharacterScreen(state)
                         }
                     }

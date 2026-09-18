@@ -1,30 +1,33 @@
-# Current state
+﻿# Current state
 
-- Milestone: **2 — The First Hunt**, in progress.
-- App: ExileHunt; existing ID/namespace `com.example.lootrpg` retained; min API 26.
-- Implemented: persistent Player/CombatStats domain models, atomic load-or-create
-  repository, ViewModel loading/loaded/error/retry states, manual DI, time/RNG seams.
-  Room v2 replaces the temporary marker via explicit migration. Four saveable tabs:
-  Hunt, Character, Inventory, World; dark theme, XP display, scrollable placeholders.
-- Architecture: JVM-only `domain` module; `app` packages separate UI, presentation,
-  data/persistence, and dependency wiring. No gameplay or networking.
+- **Milestone 2 - The First Hunt: complete (2026-09-18).** ExileHunt is playable
+  offline; application ID remains `com.example.lootrpg`, minimum API 26.
+- Implemented: acknowledged opening lore, five weighted encounters, immediate
+  round-based combat, XP/gold, multi-level progression, absolute cooldown, latest
+  10 hunts, lifetime statistics, and four saveable tabs. Inventory/equipment and
+  future locations remain placeholders; no items, networking, or unlock mechanics.
+- Architecture: pure JVM `domain` rules/contracts; Android `app` UI, presentation,
+  data/persistence, and manual DI. HuntRepository performs atomic operations;
+  Room v3 preserves saves through explicit v1/v2 migrations. UI consumes saved
+  results, with a short reveal independent of combat calculation.
+- Configuration: `domain/src/main/kotlin/com/example/lootrpg/hunt/domain/GameConfig.kt`
+  owns cooldown values: debug 10 seconds, release/default 15 minutes. AppContainer
+  selects via BuildConfig.DEBUG. Static content: GameDefinitions.kt; XP/stat rules:
+  player/domain/Progression.kt. Device time is sampled through TimeProvider.
 - Key paths: `domain/src/main/kotlin`, `app/src/main/kotlin`, `app/schemas`,
-  `gradle/libs.versions.toml`; unit tests in each module's `src/test`, Room test in
-  `app/src/androidTest`.
-- Verified: debug build/install, 15 JVM tests, 3 Room device tests, and lint (no issues).
-  Device tests cover creation/concurrent loads, reopening existing data, and v1 -> v2.
-  API 37 emulator: all tabs, Hunt message only, player restart, scroll/tab restoration
-  after confirmed process death, Back to Hunt, and 320dp width at 130% text size.
-  Commands/prerequisites: README. API 26 and physical devices not tested.
-- Tooling warnings: JDK 25 exposes an upstream protobuf Unsafe deprecation during
-  device testing; an AndroidX native library is packaged without symbol stripping.
-  Neither prevented validation. No dependency downgrade or extra NDK was needed.
-- Limitations: one offline profile, no player mutation APIs; only Level 1 XP target
-  specified; no release signing or backend. Device time remains mutable.
-- Domain hunt rules, weighted definitions, combat, and progression now implemented
-  and JVM-tested; Room v3 transactional persistence implemented, UI integration next.
-- Cooldown configuration: `domain/.../hunt/domain/GameConfig.kt` (10s debug, 15m release).
-- Approved limitation: supplied stats make natural defeat impossible; preserve them.
+  `gradle/libs.versions.toml`; JVM tests in each module's `src/test`, integration
+  tests in `app/src/androidTest`. Build/setup commands: README.
+- Verified: debug and unsigned release APK builds, 31 JVM tests, 9 device tests,
+  lint with no issues. API 37 emulator: opening, all encounters, leveling, tabs,
+  cooldown/reward/history restart persistence, 320dp width with 130% font size.
+  Ten-minute ADB-assisted live playtest: 46 hunts, Level 4. See PLAYTEST_M2.md.
+- Approved limitation: supplied stats make natural defeat impossible; defeat is
+  covered with deterministic weak-player fixtures, including UI and persistence.
+  Level 5 banks XP because later thresholds are TBD. No silent rebalancing.
+- Remaining limitations: one local profile, mutable device time, placeholder
+  visuals, no release signing; API 26/physical devices not exercised. Upstream
+  JDK 25 protobuf Unsafe and native-symbol stripping warnings are nonblocking.
+- Next: Milestone 3 scope to be agreed. Do not implement it without a request.
 
-Read ARCHITECTURE for boundaries, GAME_DESIGN for known rules/TBDs, DATA_MODEL for
-persisted concepts, DECISIONS for rationale, and ROADMAP for milestone direction.
+Read ARCHITECTURE for boundaries, GAME_DESIGN for rules/TBDs, DATA_MODEL for
+storage, DECISIONS for rationale, and ROADMAP for milestone direction.

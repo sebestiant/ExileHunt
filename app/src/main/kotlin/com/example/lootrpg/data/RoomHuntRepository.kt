@@ -12,8 +12,10 @@ internal class RoomHuntRepository(
     private val database: LootRpgDatabase,
     private val resolveHunt: ResolveHuntUseCase,
 ) : HuntRepository {
+    private val players = RoomPlayerRepository(database.playerDao())
+
     override suspend fun load(initialPlayer: Player): HuntState = database.withTransaction {
-        database.playerDao().getOrCreate(initialPlayer.toEntity())
+        players.getOrCreate(initialPlayer)
         readState()
     }
 

@@ -1,14 +1,31 @@
 package com.example.lootrpg.presentation
 
 import com.example.lootrpg.player.domain.Player
+import com.example.lootrpg.player.domain.Progression
+import com.example.lootrpg.hunt.domain.HuntState
+import com.example.lootrpg.hunt.domain.GameDefinitions
+
+enum class EncounterPhase { Idle, Searching, Encounter }
+enum class HuntActionError { Hunt, Introduction }
 
 sealed interface HomeUiState {
     data object Loading : HomeUiState
-    data class Loaded(val player: Player, val experience: ExperienceDisplay) : HomeUiState
+    data class Loaded(
+        val snapshot: HuntState,
+        val remainingSeconds: Long = 0,
+        val busy: Boolean = false,
+        val phase: EncounterPhase = EncounterPhase.Idle,
+        val actionError: HuntActionError? = null,
+    ) : HomeUiState {
+        val player get() = snapshot.player
+        val experience get() = ExperienceDisplay.forPlayer(player)
+        val area get() = GameDefinitions.wildOutskirts
+        val huntAvailable get() = player.introductionAcknowledged && !busy && remainingSeconds == 0L
+    }
     data object Error : HomeUiState
 }
 
-/** Only the Level 1 display target is specified; this is not a progression formula. */
+/** UI formatting delegates requirements to Domain. */
 data class ExperienceDisplay(val current: Long, val required: Long?) {
     val fraction: Float
         get() = required?.takeIf { it > 0 }?.let {
@@ -18,7 +35,7 @@ data class ExperienceDisplay(val current: Long, val required: Long?) {
     companion object {
         fun forPlayer(player: Player) = ExperienceDisplay(
             current = player.currentXp,
-            required = if (player.level == 1) 100 else null,
+            required = Progression.requiredXp(player.level),
         )
     }
 }

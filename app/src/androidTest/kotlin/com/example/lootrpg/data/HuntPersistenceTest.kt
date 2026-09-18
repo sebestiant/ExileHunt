@@ -72,6 +72,24 @@ class HuntPersistenceTest {
         } finally { db.close() }
     }
 
+    @Test fun defeatFixturePersistsNoRewardsAndCountsTheHunt() = runTest {
+        val db = open()
+        try {
+            val repo = repository(db)
+            val weak = Player.newAdventurer().copy(
+                stats = com.example.lootrpg.player.domain.CombatStats(1, 0, 1), introductionAcknowledged = true,
+            )
+            repo.load(weak)
+            val result = repo.performHunt() as HuntAttempt.Completed
+            assertEquals(CombatOutcome.Defeat, result.result.combat.outcome)
+            assertEquals(0L, result.state.player.currentXp)
+            assertEquals(100L, result.state.player.gold)
+            assertEquals(1L, result.state.player.defeats)
+            assertNotNull(result.state.player.nextHuntAt)
+            assertEquals(result.state, repo.load(Player.newAdventurer()))
+        } finally { db.close() }
+    }
+
     @Test fun historyWriteFailureRollsBackEveryPlayerChange() = runTest {
         val db = open()
         try {

@@ -6,9 +6,10 @@ import com.example.lootrpg.core.domain.RandomProvider
 import com.example.lootrpg.core.domain.TimeProvider
 import com.example.lootrpg.data.LocalRandomProvider
 import com.example.lootrpg.data.LocalTimeProvider
-import com.example.lootrpg.data.RoomPlayerRepository
 import com.example.lootrpg.data.persistence.LootRpgDatabase
-import com.example.lootrpg.player.domain.LoadPlayerUseCase
+import com.example.lootrpg.BuildConfig
+import com.example.lootrpg.data.RoomHuntRepository
+import com.example.lootrpg.hunt.domain.*
 
 /** Application-scoped composition root. Only wiring knows concrete dependencies. */
 class AppContainer(context: Context) {
@@ -21,5 +22,10 @@ class AppContainer(context: Context) {
         "lootrpg.db",
     ).addMigrations(LootRpgDatabase.MIGRATION_1_2, LootRpgDatabase.MIGRATION_2_3).build()
 
-    val loadPlayer = LoadPlayerUseCase(RoomPlayerRepository(database.playerDao()))
+    private val huntRepository = RoomHuntRepository(database, ResolveHuntUseCase(
+        timeProvider, randomProvider, if (BuildConfig.DEBUG) GameConfig.Development else GameConfig.Production,
+    ))
+    val loadHunt = LoadHuntUseCase(huntRepository)
+    val performHunt = PerformHuntUseCase(huntRepository)
+    val acknowledgeIntroduction = AcknowledgeIntroductionUseCase(huntRepository)
 }

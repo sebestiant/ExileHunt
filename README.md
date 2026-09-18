@@ -1,8 +1,8 @@
 # ExileHunt
 
-Offline Android asynchronous loot RPG. Milestone 1 provides a dark fantasy
-application shell with Hunt, Character, Inventory, and World tabs, plus a persistent
-adventurer profile. Hunting and other gameplay are not implemented yet.
+Offline Android asynchronous loot RPG. Milestone 2 adds the first playable hunt
+loop: five encounters, instant round-based combat, XP/gold, leveling, cooldowns,
+and persistent recent hunts. Inventory and equipment remain placeholders.
 
 Kotlin, Jetpack Compose/Material 3, ViewModel, Coroutines/StateFlow, Room, Gradle
 Kotlin DSL, and JUnit. Versions live in `gradle/libs.versions.toml`.
@@ -49,11 +49,19 @@ connect a device with USB debugging. Minimum Android version is API 26.
 ```
 
 On macOS/Linux use `adb` from SDK platform-tools. The home screen identifies the
-game and loads the saved adventurer (or creates one on first launch). Hunt only
-displays a coming-soon message. The application ID remains `com.example.lootrpg`
+game and loads the saved adventurer (or creates one on first launch). A brief opening
+appears until acknowledged. The application ID remains `com.example.lootrpg`
 to preserve installed data from Milestone 0. Android Studio users may open
 the repository, sync Gradle, select `app`, and Run. Use the same supported Gradle
 JDK as the command line. Release signing/distribution is outside this milestone.
+
+Cooldown configuration is centralized in
+`domain/src/main/kotlin/com/example/lootrpg/hunt/domain/GameConfig.kt`:
+debug builds use **10 seconds**; release/default uses **15 minutes**. AppContainer
+selects the configuration using BuildConfig.DEBUG. Cooldown persists across restarts.
+All supplied monster stats are preserved: natural defeat is currently impossible
+for the starting character. Level 5 banks XP pending future requirements. See
+GAME_DESIGN for these deliberate balancing limitations.
 
 ## Documentation map
 
@@ -64,3 +72,4 @@ JDK as the command line. Release signing/distribution is outside this milestone.
 - [Data model](docs/DATA_MODEL.md): implemented storage versus future concepts.
 - [Roadmap](docs/ROADMAP.md): milestone direction.
 - [Decisions](docs/DECISIONS.md): significant choices and rationale.
+- [Milestone 2 playtest](docs/PLAYTEST_M2.md): measured session results and verification limits.
