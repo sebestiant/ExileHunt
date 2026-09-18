@@ -1,0 +1,241 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "d54e2d33dd897202aa72bb553ee5c557",
+    "entities": [
+      {
+        "tableName": "player",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`slot` INTEGER NOT NULL, `playerId` TEXT NOT NULL, `name` TEXT NOT NULL, `level` INTEGER NOT NULL, `currentXp` INTEGER NOT NULL, `gold` INTEGER NOT NULL, `attack` INTEGER NOT NULL, `defense` INTEGER NOT NULL, `maxHealth` INTEGER NOT NULL, `nextHuntAtEpochMillis` INTEGER, `introductionAcknowledged` INTEGER NOT NULL DEFAULT 0, `victories` INTEGER NOT NULL DEFAULT 0, `defeats` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`slot`))",
+        "fields": [
+          {
+            "fieldPath": "slot",
+            "columnName": "slot",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playerId",
+            "columnName": "playerId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentXp",
+            "columnName": "currentXp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gold",
+            "columnName": "gold",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attack",
+            "columnName": "attack",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defense",
+            "columnName": "defense",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxHealth",
+            "columnName": "maxHealth",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextHuntAtEpochMillis",
+            "columnName": "nextHuntAtEpochMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "introductionAcknowledged",
+            "columnName": "introductionAcknowledged",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "victories",
+            "columnName": "victories",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "defeats",
+            "columnName": "defeats",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "slot"
+          ]
+        }
+      },
+      {
+        "tableName": "recent_hunt",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sequence` INTEGER NOT NULL, `monsterId` TEXT NOT NULL, `monsterName` TEXT NOT NULL, `monsterLevel` INTEGER NOT NULL, `monsterDescription` TEXT NOT NULL, `outcome` TEXT NOT NULL, `rounds` INTEGER NOT NULL, `damageDealt` INTEGER NOT NULL, `damageTaken` INTEGER NOT NULL, `roundLimitReached` INTEGER NOT NULL, `experienceGained` INTEGER NOT NULL, `goldGained` INTEGER NOT NULL, `occurredAtEpochMillis` INTEGER NOT NULL, `nextHuntAtEpochMillis` INTEGER NOT NULL, `levelUp_fromLevel` INTEGER, `levelUp_toLevel` INTEGER, `levelUp_beforeAttack` INTEGER, `levelUp_beforeDefense` INTEGER, `levelUp_beforeHealth` INTEGER, `levelUp_afterAttack` INTEGER, `levelUp_afterDefense` INTEGER, `levelUp_afterHealth` INTEGER, PRIMARY KEY(`sequence`))",
+        "fields": [
+          {
+            "fieldPath": "sequence",
+            "columnName": "sequence",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "monsterId",
+            "columnName": "monsterId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "monsterName",
+            "columnName": "monsterName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "monsterLevel",
+            "columnName": "monsterLevel",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "monsterDescription",
+            "columnName": "monsterDescription",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "outcome",
+            "columnName": "outcome",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rounds",
+            "columnName": "rounds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "damageDealt",
+            "columnName": "damageDealt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "damageTaken",
+            "columnName": "damageTaken",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roundLimitReached",
+            "columnName": "roundLimitReached",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "experienceGained",
+            "columnName": "experienceGained",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "goldGained",
+            "columnName": "goldGained",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "occurredAtEpochMillis",
+            "columnName": "occurredAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextHuntAtEpochMillis",
+            "columnName": "nextHuntAtEpochMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "levelUp.fromLevel",
+            "columnName": "levelUp_fromLevel",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "levelUp.toLevel",
+            "columnName": "levelUp_toLevel",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "levelUp.beforeAttack",
+            "columnName": "levelUp_beforeAttack",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "levelUp.beforeDefense",
+            "columnName": "levelUp_beforeDefense",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "levelUp.beforeHealth",
+            "columnName": "levelUp_beforeHealth",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "levelUp.afterAttack",
+            "columnName": "levelUp_afterAttack",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "levelUp.afterDefense",
+            "columnName": "levelUp_afterDefense",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "levelUp.afterHealth",
+            "columnName": "levelUp_afterHealth",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "sequence"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd54e2d33dd897202aa72bb553ee5c557')"
+    ]
+  }
+}

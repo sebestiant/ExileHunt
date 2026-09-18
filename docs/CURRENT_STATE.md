@@ -22,7 +22,7 @@
 - Limitations: one offline profile, no player mutation APIs; only Level 1 XP target
   specified; no release signing or backend. Device time remains mutable.
 - Domain hunt rules, weighted definitions, combat, and progression now implemented
-  and JVM-tested; transactional persistence and playable UI are next.
+  and JVM-tested; Room v3 transactional persistence implemented, UI integration next.
 - Cooldown configuration: `domain/.../hunt/domain/GameConfig.kt` (10s debug, 15m release).
 - Approved limitation: supplied stats make natural defeat impossible; preserve them.
 

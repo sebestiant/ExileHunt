@@ -77,3 +77,15 @@ duplicate back-stack entries. Back returns to Hunt. Consequence: navigation must
 be revisited when nested flows appear; no generic router is introduced now.
 Display/build name becomes ExileHunt, but application ID, database filename, and
 internal namespace stay unchanged to preserve existing installations and migration.
+
+## 2026-09-18 — Atomic hunt operation and explicit progression boundary
+
+Context: each hunt changes multiple saved values and may later be server-authoritative.
+Decision: HuntRepository.performHunt returns a complete result; the local repository
+calls a pure domain resolver within a Room transaction before committing all state.
+This avoids a read/calculate/write race and partial rewards without leaking Room into
+Domain. History stores the latest ten immutable encounter snapshots; lifetime totals
+remain on Player. No network, generic unit-of-work, or synchronization system added.
+Level 5 banks XP until later thresholds are specified. The user explicitly retained
+the monster stats despite their making natural defeat impossible; tests exercise
+defeat with fixtures, not altered encounter probabilities or live content.

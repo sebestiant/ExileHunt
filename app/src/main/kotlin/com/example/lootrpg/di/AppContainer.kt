@@ -19,7 +19,7 @@ class AppContainer(context: Context) {
         context.applicationContext,
         LootRpgDatabase::class.java,
         "lootrpg.db",
-    ).addMigrations(LootRpgDatabase.MIGRATION_1_2).build()
+    ).addMigrations(LootRpgDatabase.MIGRATION_1_2, LootRpgDatabase.MIGRATION_2_3).build()
 
     val loadPlayer = LoadPlayerUseCase(RoomPlayerRepository(database.playerDao()))
 }

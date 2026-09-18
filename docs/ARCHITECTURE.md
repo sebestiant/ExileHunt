@@ -12,7 +12,8 @@ packages rather than additional modules. Namespace: `com.example.lootrpg`.
 | `domain/.../core/domain` | TimeProvider and RandomProvider contracts |
 | `domain/.../player/domain` | Player/CombatStats models, repository contract, load-or-create use case |
 | `app/.../data` | Local adapters and repository implementations |
-| `app/.../data/persistence` | Internal Room database, DAO, and entity |
+| `domain/.../hunt/domain` | Content, combat, eligibility, result contracts and hunt use cases |
+| `app/.../data/persistence` | Internal Room database, DAOs, and save entities |
 | `app/.../presentation` | HomeViewModel and immutable HomeUiState |
 | `app/.../ui` | Four primary screens, shell navigation, shared panels, dark theme |
 | `app/.../di` | Application-scoped manual composition root |
@@ -50,6 +51,15 @@ to be the permanent authority. Business rules remain independent and portable.
 
 ## Current integration slice
 
+Milestone 2 adds HuntRepository with load, acknowledgeIntroduction, and performHunt.
+PerformHuntUseCase delegates to this operation boundary so a remote repository could
+return the same HuntAttempt/HuntResult later. The local RoomHuntRepository invokes
+ResolveHuntUseCase against the latest state within a transaction, then atomically
+persists player changes and the last 10 encounters. Pure Domain rules handle all
+eligibility, RNG, combat, rewards, and progression; Data only maps and commits.
+Tests inject SQLite write failure to prove rollback, and concurrent calls to prove
+cooldown enforcement. No UI timing is part of combat resolution.
+
 HomeViewModel calls LoadPlayerUseCase. Default player values live in Domain.
 PlayerRepository.getOrCreate atomically returns the stored profile or persists the
 initial player. RoomPlayerRepository maps domain objects to a single internal row;
@@ -72,8 +82,8 @@ against clock manipulation; a server-backed clock can replace this adapter later
 
 RandomProvider offers bounded integers and unit-interval doubles. LocalRandomProvider
 wraps Kotlin Random at this single boundary. Tests can inject scripted fakes or
-seeded generators. No probability rules, loot, or combat are implemented. The
-production RNG is wired but intentionally unused until gameplay requires it.
+seeded generators. Combat and weighted encounters use this boundary. Loot remains
+unimplemented. GameConfig defines the debug and production cooldowns centrally.
 
 ## State and error conventions
 
@@ -85,9 +95,8 @@ generic retry message. Add typed domain failures only when concrete game operati
 require distinctions. Presentation and UI imports are reviewed for layer violations;
 only the Domain boundary is enforced by a separate module today.
 
-ExperienceDisplay supplies the specified Level 1 target (100 XP) and a bounded
-display fraction. Other level requirements remain unspecified; this is not an XP
-curve or a leveling system. No model mutation operations exist yet.
+Progression owns all XP thresholds and stat growth. ExperienceDisplay only formats
+those requirements and a bounded fraction. Level 5+ requirements are unspecified.
 
 ## Primary navigation and visual shell
 

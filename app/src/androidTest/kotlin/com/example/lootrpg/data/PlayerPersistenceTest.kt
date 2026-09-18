@@ -81,7 +81,7 @@ class PlayerPersistenceTest {
         try {
             assertEquals(Player.newAdventurer(), LoadPlayerUseCase(RoomPlayerRepository(migrated.playerDao()))())
             val sqlite = migrated.openHelper.readableDatabase
-            assertEquals(2, sqlite.version)
+            assertEquals(3, sqlite.version)
             sqlite.query("SELECT name FROM sqlite_master WHERE name = 'foundation_marker'").use {
                 assertFalse(it.moveToFirst())
             }
@@ -89,5 +89,5 @@ class PlayerPersistenceTest {
     }
 
     private fun open() = Room.databaseBuilder(context, LootRpgDatabase::class.java, name)
-        .addMigrations(LootRpgDatabase.MIGRATION_1_2).build()
+        .addMigrations(LootRpgDatabase.MIGRATION_1_2, LootRpgDatabase.MIGRATION_2_3).build()
 }

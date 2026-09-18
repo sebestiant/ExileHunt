@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 
 @Dao
 internal abstract class PlayerDao {
@@ -13,6 +14,9 @@ internal abstract class PlayerDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract suspend fun insertIfAbsent(player: PlayerEntity)
+
+    @Update
+    abstract suspend fun update(player: PlayerEntity)
 
     @Transaction
     open suspend fun getOrCreate(initialPlayer: PlayerEntity): PlayerEntity {
