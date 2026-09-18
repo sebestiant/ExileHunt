@@ -1,5 +1,7 @@
 package com.example.lootrpg.player.domain
 
+import java.time.Instant
+
 @JvmInline
 value class PlayerId(val value: String) {
     init { require(value.isNotBlank()) }
@@ -19,11 +21,17 @@ data class Player(
     val currentXp: Long,
     val gold: Long,
     val stats: CombatStats,
+    val nextHuntAt: Instant? = null,
+    val introductionAcknowledged: Boolean = false,
+    val victories: Long = 0,
+    val defeats: Long = 0,
 ) {
+    val totalHunts: Long get() = Math.addExact(victories, defeats)
     init {
         require(name.isNotBlank())
         require(level >= 1)
         require(currentXp >= 0 && gold >= 0)
+        require(victories >= 0 && defeats >= 0)
     }
 
     companion object {

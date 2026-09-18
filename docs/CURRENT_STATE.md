@@ -1,6 +1,6 @@
 # Current state
 
-- Milestone: **1 — Application Shell & Character Foundation complete** (2026-09-18).
+- Milestone: **2 — The First Hunt**, in progress.
 - App: ExileHunt; existing ID/namespace `com.example.lootrpg` retained; min API 26.
 - Implemented: persistent Player/CombatStats domain models, atomic load-or-create
   repository, ViewModel loading/loaded/error/retry states, manual DI, time/RNG seams.
@@ -21,7 +21,10 @@
   Neither prevented validation. No dependency downgrade or extra NDK was needed.
 - Limitations: one offline profile, no player mutation APIs; only Level 1 XP target
   specified; no release signing or backend. Device time remains mutable.
-- Next: agree Milestone 2 hunt-loop requirements. No Milestone 2 work implemented.
+- Domain hunt rules, weighted definitions, combat, and progression now implemented
+  and JVM-tested; transactional persistence and playable UI are next.
+- Cooldown configuration: `domain/.../hunt/domain/GameConfig.kt` (10s debug, 15m release).
+- Approved limitation: supplied stats make natural defeat impossible; preserve them.
 
 Read ARCHITECTURE for boundaries, GAME_DESIGN for known rules/TBDs, DATA_MODEL for
 persisted concepts, DECISIONS for rationale, and ROADMAP for milestone direction.
