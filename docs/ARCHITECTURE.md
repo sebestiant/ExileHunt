@@ -14,7 +14,7 @@ packages rather than additional modules. Namespace: `com.example.lootrpg`.
 | `app/.../data` | Local adapters and repository implementations |
 | `app/.../data/persistence` | Internal Room database, DAO, and entity |
 | `app/.../presentation` | HomeViewModel and immutable HomeUiState |
-| `app/.../ui` | Stateless Compose rendering |
+| `app/.../ui` | Four primary screens, shell navigation, shared panels, dark theme |
 | `app/.../di` | Application-scoped manual composition root |
 | `*/src/test` | JVM tests with deterministic dependencies |
 | `app/src/androidTest` | Actual Room integration on Android |
@@ -88,3 +88,24 @@ only the Domain boundary is enforced by a separate module today.
 ExperienceDisplay supplies the specified Level 1 target (100 XP) and a bounded
 display fraction. Other level requirements remain unspecified; this is not an XP
 curve or a leveling system. No model mutation operations exist yet.
+
+## Primary navigation and visual shell
+
+HomeScreen owns four fixed primary destinations: Hunt (default), Character,
+Inventory, World. A Material 3 NavigationBar stays visible. There is one activity
+and no route stack: repeated tab taps select the same screen. Selected tab is
+rememberSaveable; SaveableStateHolder preserves each tab's scroll state across
+switches and saved-state recreation. Back from another tab returns to Hunt.
+This small switcher needs no navigation dependency; reconsider if nested routes
+or deep links introduce an actual stack requirement.
+
+One activity-scoped HomeViewModel supplies Hunt/Character with the same immutable
+player state. Loading and error/retry are rendered for player-dependent screens;
+Inventory and World contain only presentation placeholders. The Hunt action
+only shows a Snackbar and cannot call gameplay or persistence mutations.
+
+ExileHuntTheme defines the dark palette and typography. Shared Panel,
+PlayerSummary, and DetailRow avoid duplicated player formatting. Area labels and
+descriptions are string resources shared across screens; equipment/location lists
+are presentation-only resource IDs. AreaPreview is a small original Compose
+silhouette. Insets come from Scaffold and all screen bodies scroll independently.

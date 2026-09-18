@@ -36,7 +36,7 @@ disabled; export/cloud-save policy is TBD.
 ## STATIC GAME DEFINITIONS - not persisted
 
 The Level 1 display target is 100 XP, centralized in ExperienceDisplay. It is not
-a progression formula. Area names/descriptions and locked labels for the upcoming
+a progression formula. Area names/descriptions and locked labels in the
 shell are presentation placeholders, not area domain models or player unlock state.
 Monsters, item bases, affixes, rarities, loot tables, XP curves, and progression
 rules remain conceptual; schemas, identifiers, and storage formats are TBD.

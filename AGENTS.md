@@ -1,6 +1,6 @@
 # Repository instructions
 
-LootRPG is the temporary name for an Android 2D asynchronous loot RPG. It is
+ExileHunt is an Android 2D asynchronous loot RPG. It is
 offline today and must support a future server-backed implementation. Use original
 content; never copy proprietary assets, text, characters, names, or UI designs.
 

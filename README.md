@@ -1,7 +1,8 @@
-# LootRPG
+# ExileHunt
 
-Temporary working name for an Android asynchronous loot RPG prototype. Milestone 0
-provides engineering foundations and a placeholder screen; gameplay is not built.
+Offline Android asynchronous loot RPG. Milestone 1 provides a dark fantasy
+application shell with Hunt, Character, Inventory, and World tabs, plus a persistent
+adventurer profile. Hunting and other gameplay are not implemented yet.
 
 Kotlin, Jetpack Compose/Material 3, ViewModel, Coroutines/StateFlow, Room, Gradle
 Kotlin DSL, and JUnit. Versions live in `gradle/libs.versions.toml`.
@@ -48,7 +49,9 @@ connect a device with USB debugging. Minimum Android version is API 26.
 ```
 
 On macOS/Linux use `adb` from SDK platform-tools. The home screen identifies the
-prototype and becomes ready after initialization. Android Studio users may open
+game and loads the saved adventurer (or creates one on first launch). Hunt only
+displays a coming-soon message. The application ID remains `com.example.lootrpg`
+to preserve installed data from Milestone 0. Android Studio users may open
 the repository, sync Gradle, select `app`, and Run. Use the same supported Gradle
 JDK as the command line. Release signing/distribution is outside this milestone.
 

@@ -24,3 +24,16 @@ offline clock-change handling, monetization, and backend design: **TBD**.
 The default player is Adventurer, Level 1, XP 0, Gold 100, Attack 10, Defense 5,
 and Max Health 100. The Level 1 XP display target is 100; no XP gain or progression
 formula is implemented. Player values persist locally and are not reset on launch.
+
+The shell has Hunt, Character, Inventory, and World destinations. The current area
+is The Wild Outskirts: "A quiet frontier where inexperienced adventurers begin
+their journey." Ashen Woods, Forgotten Ruins, and Blackstone Pass are temporary
+locked location labels, not unlock mechanics or area definitions.
+
+Character displays Weapon, Helmet, Armour, Gloves, and Boots as Empty; inventory
+is an empty-state placeholder. There are no item or equipment models. Hunt shows
+"Hunt Available" but only displays a message that hunting comes next milestone.
+There is no cooldown, combat, XP/gold gain, or any other gameplay mutation.
+
+Visual direction: original dark fantasy presentation, charcoal panels, muted gold
+accents, readable system typography, simple silhouettes, and prominent primary action.

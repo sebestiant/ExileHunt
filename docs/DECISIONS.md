@@ -67,3 +67,13 @@ Room uses an internal singleton slot distinct from PlayerId. A fixed local ID is
 sufficient; a UUID service or account identity would be speculative. Migration
 1 -> 2 replaces the temporary marker without destructive fallback. Consequence:
 future account support must explicitly map local identity; no unused CRUD APIs.
+
+## 2026-09-18 — Four saveable primary tabs without a navigation stack
+
+Context: Milestone 1 has four peer screens and no nested destinations/deep links.
+Decision: Material 3 NavigationBar, saveable selection, per-tab SaveableStateHolder,
+and one player ViewModel. Rationale: switching tabs needs no new dependency or
+duplicate back-stack entries. Back returns to Hunt. Consequence: navigation must
+be revisited when nested flows appear; no generic router is introduced now.
+Display/build name becomes ExileHunt, but application ID, database filename, and
+internal namespace stay unchanged to preserve existing installations and migration.

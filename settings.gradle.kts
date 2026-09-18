@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "LootRPG"
+rootProject.name = "ExileHunt"
 include(":app", ":domain")
