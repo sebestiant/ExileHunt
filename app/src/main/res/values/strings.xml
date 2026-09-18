@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LootRPG</string>
+    <string name="prototype_description">Asynchronous loot RPG prototype</string>
+    <string name="preparing">Preparing prototype…</string>
+    <string name="ready">The prototype is ready.</string>
+    <string name="initialization_failed">Unable to prepare the prototype. Please try again.</string>
+    <string name="retry">Retry</string>
+</resources>
